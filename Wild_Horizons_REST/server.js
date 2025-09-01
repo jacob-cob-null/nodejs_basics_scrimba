@@ -1,13 +1,18 @@
-import { write } from 'node:fs'
 import http from 'node:http'
-
+import { getData } from './database/dataFetcher.js'
 const PORT = 8000
 
-//pass a callback, req and res
-const server = http.createServer((req, res) => {
-    res.write("THis is a data")
-    res.end()
+const server = http.createServer(async (req, res) => {
+
+    console.log("Incoming request:", req.url)
+
+    if (req.url == '/api') {
+        const raw = await getData() || []
+        const list = raw.map(item => `${item.name} from ${item.country}`)
+        res.statusCode = 200
+        res.end(JSON.stringify(list))
+    }
+
 })
 
-//get port and callback
-server.listen(PORT, () => console.log(`From ${PORT}`))
+server.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`))
