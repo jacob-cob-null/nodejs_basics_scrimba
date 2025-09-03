@@ -2,7 +2,7 @@ import http from 'node:http'
 import { routesEntry } from './routes/routeEntry.js'
 import { parse } from 'node:path'
 
-const PORT = 8000
+const PORT = 3000
 
 const server = http.createServer(async (req, res) => {
 
