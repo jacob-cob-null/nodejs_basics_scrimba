@@ -1,17 +1,13 @@
 import http from 'node:http'
-import { getData } from './database/dataFetcher.js'
+import { routesEntry } from './routes/routeEntry.js'
+import { parse } from 'node:path'
+
 const PORT = 8000
 
 const server = http.createServer(async (req, res) => {
 
-    console.log("Incoming request:", req.url)
-
-    if (req.url == '/api') {
-        const raw = await getData() || []
-        const list = raw.map(item => `${item.name} from ${item.country}`)
-        res.statusCode = 200
-        res.end(JSON.stringify(list))
-    }
+    //router entry
+    routesEntry(req, res)
 
 })
 
