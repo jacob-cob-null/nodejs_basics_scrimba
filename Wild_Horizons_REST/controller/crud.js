@@ -28,3 +28,7 @@ export async function getDestinationbyId(id, req, res) {
         res.end(JSON.stringify({ message: "Destination not found" }))
     }
 }
+// post new destination
+// put destination
+// patch destination
+// delete destination

@@ -16,7 +16,21 @@ export async function routesEntry(req, res) {
         // /destinations/id
     } else if (urlRoute.startsWith('/destinations/')) {
         const id = urlRoute.split('/').pop()
-        console.log(id)
-        await getDestinationbyId(id, req, res)
+
+        const method = req.method
+        switch (String(method)) {
+            case 'PUT':
+                console.log('put')
+                break
+            case 'PATCH':
+                console.log('patch')
+                break
+            case 'GET':
+                console.log('get')
+                if (id) {
+                    await getDestinationbyId(id, req, res)
+                }
+                break
+        }
     }
 }
