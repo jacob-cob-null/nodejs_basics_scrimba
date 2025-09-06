@@ -1,10 +1,12 @@
 import { parse } from "node:url"
+
 import {
     getDestinations,
     getOpenDestinations,
     getRestrictedDestinations,
     getDestinationByContinent,
-    getDestinationByCountry
+    getDestinationByCountry,
+    getDestinationByKeyword
 } from "../controller/destinationCollection.js"
 import { getDestinationbyId } from "../controller/destinationItem.js"
 
@@ -38,6 +40,10 @@ export async function routesEntry(req, res) {
     else if (urlRoute.includes('/country/')) {
         const country = urlRoute.split('/').pop()
         getDestinationByCountry(country, req, res)
+    }
+    // GET /destinations/country/:country
+    else if (urlRoute.includes('/search')) {
+        getDestinationByKeyword(parsedUrl.query.q, req, res)
     }
 
     // /destinations/id

@@ -1,7 +1,6 @@
 import { headUtil } from "../utility/util.js";
 import { getData } from "../database/dataFetcher.js";
 
-
 // GET /destinations
 export async function getDestinations(req, res) {
     const data = await getData()
@@ -66,3 +65,38 @@ export async function getDestinationByCountry(country, req, res,) {
 }
 
 // GET /destinations/search?q=keyword
+export async function getDestinationByKeyword(keyword, req, res) {
+    const data = await getData();
+    if (!data) {
+        headUtil(res, 404, "application/json");
+        res.end(JSON.stringify({ message: "Destinations not found" }));
+        return;
+    }
+
+    // normalize keyword for case-insensitive search
+    const lowerKeyword = keyword.toLowerCase();
+
+    // filter destinations
+    const similarDestinations = data.filter(destination => {
+        return Object.values(destination).some(value => {
+            if (typeof value === "string") {
+                return value.toLowerCase().includes(lowerKeyword);
+            }
+            if (typeof value === "number" || typeof value === "boolean") {
+                return value.toString().includes(lowerKeyword);
+            }
+            if (Array.isArray(value)) {
+                return value.some(item =>
+                    Object.values(item).some(innerVal =>
+                        typeof innerVal === "string" &&
+                        innerVal.toLowerCase().includes(lowerKeyword)
+                    )
+                );
+            }
+            return false;
+        });
+    });
+
+    headUtil(res, 200, "application/json");
+    res.end(JSON.stringify(similarDestinations));
+}
