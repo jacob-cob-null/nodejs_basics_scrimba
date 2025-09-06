@@ -39,7 +39,30 @@ export async function getRestrictedDestinations(req, res) {
     }
 }
 
-// GET /destinations/restricted
+
 // GET /destinations/continent/:continent
+export async function getDestinationByContinent(continent, req, res,) {
+    const data = await getData()
+    if (data) {
+        const filteredDestination = data.filter(destination => destination.continent.toLowerCase() == continent.toLowerCase())
+        headUtil(res, 200, "application/json")
+        res.end(JSON.stringify(filteredDestination))
+    } else {
+        headUtil(res, 404, "application/json")
+        res.end(JSON.stringify({ message: "Destinations not found" }))
+    }
+}
 // GET /destinations/country/:country
+export async function getDestinationByCountry(country, req, res,) {
+    const data = await getData()
+    if (data) {
+        const filteredDestination = data.filter(destination => destination.country.toLowerCase() == country.toLowerCase())
+        headUtil(res, 200, "application/json")
+        res.end(JSON.stringify(filteredDestination))
+    } else {
+        headUtil(res, 404, "application/json")
+        res.end(JSON.stringify({ message: "Destinations not found" }))
+    }
+}
+
 // GET /destinations/search?q=keyword
