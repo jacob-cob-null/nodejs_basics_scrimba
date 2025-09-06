@@ -1,5 +1,6 @@
 import { parse } from "node:url"
-import { getDestinationbyId, getDestinations } from "../controller/crud.js"
+import { getDestinations, getOpenDestinations, getRestrictedDestinations } from "../controller/destinationCollection.js"
+import { getDestinationbyId } from "../controller/destinationItem.js"
 
 //router setup
 export async function routesEntry(req, res) {
@@ -13,8 +14,17 @@ export async function routesEntry(req, res) {
     if (urlRoute == '/destinations') {
         getDestinations(req, res)
 
-        // /destinations/id
-    } else if (urlRoute.startsWith('/destinations/')) {
+    }
+    // GET /destination/open
+    else if (urlRoute == '/destinations/open') {
+        getOpenDestinations(req, res)
+    }
+    // GET /destination/restricted
+    else if (urlRoute == '/destinations/closed') {
+        getRestrictedDestinations(req, res)
+    }
+    // /destinations/id
+    else if (urlRoute.startsWith('/destinations/')) {
         const id = urlRoute.split('/').pop()
 
         const method = req.method
@@ -33,4 +43,5 @@ export async function routesEntry(req, res) {
                 break
         }
     }
+
 }

@@ -1,6 +1,5 @@
 import http from 'node:http'
 import { routesEntry } from './routes/routeEntry.js'
-import { parse } from 'node:path'
 
 const PORT = 3000
 
